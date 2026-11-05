@@ -48,3 +48,7 @@ MongoDB comprueba lo que le pedimos con **índices**, por ejemplo el índice ún
 ## Reto 2: tu propio anuncio
 
 Dos `ObjectId` son dos objetos distintos en memoria, aunque representen el mismo id, así que `===` compara referencias y daría `false`. Por eso se usa `listing.seller.id.equals(buyer._id)`, que compara el valor del id.
+
+## Reto 3: estadísticas
+
+Escrita **después** de `router.get("/:id", ...)`, `GET /api/listings/stats` devuelve **`400`** (`El id no tiene un formato válido`). Express prueba las rutas en el orden en que se registran, y `/:id` encaja con cualquier texto, así que toma `"stats"` como id y, como no es un ObjectId válido, responde 400 sin llegar nunca a la ruta de estadísticas. Se arregla registrando `/stats` **antes** de `/:id`: las rutas fijas tienen que ir antes que las que tienen parámetros.
