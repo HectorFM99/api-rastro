@@ -16,3 +16,7 @@ La línea importante: **`Changes must be made through a pull request.`** La regl
 ## Pregunta 1
 
 Con MongoDB parado, `GET /api/health` tarda unos 5 segundos (el `serverSelectionTimeoutMS`) y devuelve **`500`** con `{ "error": "Error interno del servidor" }`. Ha respondido el **manejador de errores** (el paso 5 de `index.ts`): el `ping` lanza un error, Express 5 lo pasa al middleware de 4 parámetros y este responde un mensaje genérico sin detalles internos.
+
+## Pregunta 2
+
+Porque todo lo que viene en la URL llega como **texto**: `req.query` es `{ price: "380" }`, con el `"380"` como string. En MongoDB el precio está guardado como número (`380`), y `"380"` y `380` son tipos distintos, así que el filtro no coincide con ningún documento.
