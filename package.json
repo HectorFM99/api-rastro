@@ -1,0 +1,37 @@
+{
+  "name": "api-rastro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/index.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HectorFM99/api-rastro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HectorFM99/api-rastro/issues"
+  },
+  "homepage": "https://github.com/HectorFM99/api-rastro#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0",
+    "typescript-eslint": "^8.72.1"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "mongodb": "^7.8.0"
+  }
+}
