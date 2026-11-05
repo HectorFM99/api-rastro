@@ -59,7 +59,6 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newOffer });
 });
 
-// ---------- PATCH /api/offers/:id (aceptar una oferta) ----------
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -68,7 +67,6 @@ router.patch("/:id", async (req, res) => {
     return;
   }
 
-  // De momento solo se puede aceptar una oferta
   if (req.body?.status !== "ACCEPTED") {
     res.status(400).json({ error: 'status tiene que ser "ACCEPTED"' });
     return;
@@ -93,8 +91,6 @@ router.patch("/:id", async (req, res) => {
     return;
   }
 
-  // Escritura 1: la oferta pasa a ACCEPTED.
-  // Filtramos también por status PENDING por si otra petición la ha cambiado entre medias.
   const acceptedOffer = await offersCollection().findOneAndUpdate(
     { _id: offerId, status: "PENDING" },
     { $set: { status: "ACCEPTED" } },
@@ -105,9 +101,6 @@ router.patch("/:id", async (req, res) => {
     return;
   }
 
-  // Escritura 2: el anuncio pasa a RESERVED.
-  // Si el servidor se apagara justo entre la 1 y la 2, quedaría la oferta aceptada
-  // y el anuncio AVAILABLE. Para evitarlo de verdad haría falta una transacción.
   await listingsCollection().updateOne({ _id: offer.listing.id }, { $set: { status: "RESERVED" } });
 
   res.json(acceptedOffer);
