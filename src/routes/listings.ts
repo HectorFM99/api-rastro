@@ -16,10 +16,8 @@ function isValidPrice(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0;
 }
 
-// Lo que se enseña de cada anuncio en un listado
 const LIST_FIELDS = { title: 1, price: 1, category: 1, city: 1, status: 1 };
 
-// ---------- GET /api/listings (listado con filtros) ----------
 router.get("/", async (req, res) => {
   // Cada filtro se construye a mano: nunca pasamos req.query tal cual
   const filter: Filter<Listing> = {};
@@ -66,7 +64,6 @@ router.get("/stats", async (_req, res) => {
   res.json(stats);
 });
 
-// ---------- GET /api/listings/:id (ficha) ----------
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -75,7 +72,6 @@ router.get("/:id", async (req, res) => {
     return;
   }
 
-  // Alguien abre la ficha: sumamos 1 a las visitas y devolvemos el anuncio ya actualizado
   const listing = await listingsCollection().findOneAndUpdate(
     { _id: new ObjectId(id) },
     { $inc: { views: 1 } },
