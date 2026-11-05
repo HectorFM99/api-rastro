@@ -44,3 +44,7 @@ MongoDB comprueba lo que le pedimos con **índices**, por ejemplo el índice ún
 ## Reto 1: aceptar una oferta
 
 **¿Qué pasa si el servidor se apaga entre una escritura y otra?** Los datos quedan incoherentes: la oferta queda `ACCEPTED` pero el anuncio sigue `AVAILABLE`, y otros compradores podrían seguir ofertando por algo que ya está reservado. MongoDB solo garantiza que cada escritura sobre **un** documento es atómica; para que las dos se hagan juntas o ninguna haría falta una **transacción** (que necesita MongoDB en modo replica set).
+
+## Reto 2: tu propio anuncio
+
+Dos `ObjectId` son dos objetos distintos en memoria, aunque representen el mismo id, así que `===` compara referencias y daría `false`. Por eso se usa `listing.seller.id.equals(buyer._id)`, que compara el valor del id.
