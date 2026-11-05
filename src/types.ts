@@ -1,8 +1,5 @@
 import type { ObjectId } from "mongodb";
 
-// Cómo son los documentos de cada colección.
-// Es el modelo de la entrega de MongoDB, con los nombres en inglés.
-
 export type ListingStatus = "AVAILABLE" | "RESERVED" | "SOLD";
 export type OfferStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
