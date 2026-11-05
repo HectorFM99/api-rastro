@@ -159,7 +159,6 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newListing });
 });
 
-// ---------- PATCH /api/listings/:id (cambiar el precio) ----------
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -174,7 +173,6 @@ router.patch("/:id", async (req, res) => {
     return;
   }
 
-  // Solo cambiamos el precio: cualquier otro campo del body se ignora
   const listing = await listingsCollection().findOneAndUpdate(
     { _id: new ObjectId(id) },
     { $set: { price } },
@@ -189,7 +187,6 @@ router.patch("/:id", async (req, res) => {
   res.json(listing);
 });
 
-// ---------- DELETE /api/listings/:id (borrar) ----------
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
