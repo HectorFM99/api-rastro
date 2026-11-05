@@ -45,9 +45,6 @@ router.get("/", async (req, res) => {
   res.json(listings);
 });
 
-// ---------- GET /api/listings/stats (estadísticas por categoría) ----------
-// Tiene que ir ANTES de "/:id": Express prueba las rutas en orden y "/:id"
-// también encaja con "/stats" (tomaría "stats" como id y respondería 400).
 router.get("/stats", async (_req, res) => {
   const stats = await listingsCollection()
     .aggregate([
