@@ -20,3 +20,7 @@ Con MongoDB parado, `GET /api/health` tarda unos 5 segundos (el `serverSelection
 ## Pregunta 2
 
 Porque todo lo que viene en la URL llega como **texto**: `req.query` es `{ price: "380" }`, con el `"380"` como string. En MongoDB el precio está guardado como número (`380`), y `"380"` y `380` son tipos distintos, así que el filtro no coincide con ningún documento.
+
+## Pregunta 3
+
+Porque esos campos los decide el servidor, no el cliente: un anuncio nuevo siempre empieza `AVAILABLE` y con 0 visitas. Si la API los aceptara, cualquiera podría inflar sus visitas (`views: 9999`) para salir como anuncio popular, o publicarlo directamente como `SOLD`/`RESERVED`, falseando los datos que ven los demás usuarios.
