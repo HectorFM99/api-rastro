@@ -6,7 +6,6 @@ if (!uri) {
   throw new Error("Falta MONGODB_URI en el archivo .env");
 }
 
-// Si MongoDB no responde, se rinde a los 5 segundos (por defecto son 30)
 const client = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
 
 let db: Db;
