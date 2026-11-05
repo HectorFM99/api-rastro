@@ -28,3 +28,11 @@ Porque esos campos los decide el servidor, no el cliente: un anuncio nuevo siemp
 ## Pregunta 4
 
 No. La copia `listing.price: 380` de la oferta es una **foto del momento** en que Sara ofertó: indica el precio que tenía el anuncio cuando hizo su oferta de 340 €, y ese dato histórico debe conservarse. El precio actual siempre se puede consultar en el propio anuncio; si el `PATCH` cambiara la copia, perderíamos el contexto de la oferta.
+
+## Pregunta 5
+
+Porque la petición está bien hecha: los ids tienen buen formato, existen y la cantidad es válida. El problema no es lo que envía el cliente, sino que choca con el **estado actual** del anuncio (ya está `SOLD`). `400` es para peticiones mal formadas; `409` es para peticiones correctas que entran en conflicto con el estado del recurso.
+
+## Pregunta 6
+
+MongoDB comprueba lo que le pedimos con **índices**, por ejemplo el índice único de `users.email` (no deja dos usuarios con el mismo email) y que cada `_id` sea único. Todo lo demás lo comprueba la API en el código: que una referencia existe (que el `sellerId` o el `listingId` estén de verdad en su colección), que `price`/`amount` sean números (y no el texto `"75"`), que los campos obligatorios lleguen o que el anuncio esté `AVAILABLE` antes de aceptar una oferta.
