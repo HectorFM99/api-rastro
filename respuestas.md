@@ -24,3 +24,7 @@ Porque todo lo que viene en la URL llega como **texto**: `req.query` es `{ price
 ## Pregunta 3
 
 Porque esos campos los decide el servidor, no el cliente: un anuncio nuevo siempre empieza `AVAILABLE` y con 0 visitas. Si la API los aceptara, cualquiera podría inflar sus visitas (`views: 9999`) para salir como anuncio popular, o publicarlo directamente como `SOLD`/`RESERVED`, falseando los datos que ven los demás usuarios.
+
+## Pregunta 4
+
+No. La copia `listing.price: 380` de la oferta es una **foto del momento** en que Sara ofertó: indica el precio que tenía el anuncio cuando hizo su oferta de 340 €, y ese dato histórico debe conservarse. El precio actual siempre se puede consultar en el propio anuncio; si el `PATCH` cambiara la copia, perderíamos el contexto de la oferta.

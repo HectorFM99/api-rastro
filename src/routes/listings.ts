@@ -132,4 +132,53 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newListing });
 });
 
+// ---------- PATCH /api/listings/:id (cambiar el precio) ----------
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    res.status(400).json({ error: "El id no tiene un formato válido" });
+    return;
+  }
+
+  const price = req.body?.price;
+  if (!isValidPrice(price)) {
+    res.status(400).json({ error: "price es obligatorio y tiene que ser un número mayor o igual que 0" });
+    return;
+  }
+
+  // Solo cambiamos el precio: cualquier otro campo del body se ignora
+  const listing = await listingsCollection().findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: { price } },
+    { returnDocument: "after" },
+  );
+
+  if (!listing) {
+    res.status(404).json({ error: "No existe ningún anuncio con ese id" });
+    return;
+  }
+
+  res.json(listing);
+});
+
+// ---------- DELETE /api/listings/:id (borrar) ----------
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    res.status(400).json({ error: "El id no tiene un formato válido" });
+    return;
+  }
+
+  const result = await listingsCollection().deleteOne({ _id: new ObjectId(id) });
+
+  if (result.deletedCount === 0) {
+    res.status(404).json({ error: "No existe ningún anuncio con ese id" });
+    return;
+  }
+
+  res.status(204).end();
+});
+
 export default router;
