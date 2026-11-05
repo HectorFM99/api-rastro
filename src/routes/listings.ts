@@ -6,12 +6,10 @@ import type { Listing } from "../types";
 
 const router = Router();
 
-// ¿Es un texto con algo dentro (no solo espacios)?
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim() !== "";
 }
 
-// ¿Es un número de verdad, mayor o igual que 0? ("75" no vale: es texto)
 function isValidPrice(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0;
 }
@@ -108,7 +106,6 @@ router.get("/:id/offers", async (req, res) => {
   res.json(offers);
 });
 
-// ---------- POST /api/listings (publicar) ----------
 router.post("/", async (req, res) => {
   const body = req.body ?? {};
 
@@ -137,15 +134,12 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  // MongoDB no comprueba las referencias: lo hacemos nosotros
   const seller = await usersCollection().findOne({ _id: new ObjectId(body.sellerId) });
   if (!seller) {
     res.status(400).json({ error: "No existe ningún usuario con ese sellerId" });
     return;
   }
 
-  // Construimos el anuncio campo a campo: nunca guardamos req.body tal cual.
-  // status, publishedAt, views y photos los pone la API, no el cliente.
   const newListing: Listing = {
     title: body.title,
     description: body.description,
@@ -155,7 +149,7 @@ router.post("/", async (req, res) => {
     city: body.city,
     publishedAt: new Date(),
     views: 0,
-    seller: { id: seller._id, name: seller.name }, // copia del nombre (desnormalización)
+    seller: { id: seller._id, name: seller.name },
     photos: [],
     attributes: body.attributes ?? {},
   };
