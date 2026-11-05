@@ -19,7 +19,6 @@ function isValidPrice(value: unknown): value is number {
 const LIST_FIELDS = { title: 1, price: 1, category: 1, city: 1, status: 1 };
 
 router.get("/", async (req, res) => {
-  // Cada filtro se construye a mano: nunca pasamos req.query tal cual
   const filter: Filter<Listing> = {};
 
   if (typeof req.query.category === "string") {
@@ -31,7 +30,6 @@ router.get("/", async (req, res) => {
   }
 
   if (req.query.maxPrice !== undefined) {
-    // Todo lo que llega en la URL es texto: hay que convertirlo
     const maxPrice = typeof req.query.maxPrice === "string" ? Number(req.query.maxPrice) : NaN;
     if (req.query.maxPrice === "" || Number.isNaN(maxPrice)) {
       res.status(400).json({ error: "maxPrice tiene que ser un número" });
