@@ -34,8 +34,6 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  // 4b. Nadie puede ofertar por su propio anuncio.
-  // Dos ObjectId son objetos distintos: === los compararía por referencia, así que usamos equals
   if (listing.seller.id.equals(buyer._id)) {
     res.status(400).json({ error: "No puedes ofertar por tu propio anuncio" });
     return;
