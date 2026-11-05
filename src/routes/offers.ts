@@ -59,4 +59,58 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newOffer });
 });
 
+// ---------- PATCH /api/offers/:id (aceptar una oferta) ----------
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    res.status(400).json({ error: "El id no tiene un formato válido" });
+    return;
+  }
+
+  // De momento solo se puede aceptar una oferta
+  if (req.body?.status !== "ACCEPTED") {
+    res.status(400).json({ error: 'status tiene que ser "ACCEPTED"' });
+    return;
+  }
+
+  const offerId = new ObjectId(id);
+
+  const offer = await offersCollection().findOne({ _id: offerId });
+  if (!offer) {
+    res.status(404).json({ error: "No existe ninguna oferta con ese id" });
+    return;
+  }
+
+  if (offer.status !== "PENDING") {
+    res.status(409).json({ error: `No se puede aceptar: la oferta está ${offer.status}` });
+    return;
+  }
+
+  const listing = await listingsCollection().findOne({ _id: offer.listing.id });
+  if (!listing || listing.status !== "AVAILABLE") {
+    res.status(409).json({ error: "No se puede aceptar: el anuncio ya no está disponible" });
+    return;
+  }
+
+  // Escritura 1: la oferta pasa a ACCEPTED.
+  // Filtramos también por status PENDING por si otra petición la ha cambiado entre medias.
+  const acceptedOffer = await offersCollection().findOneAndUpdate(
+    { _id: offerId, status: "PENDING" },
+    { $set: { status: "ACCEPTED" } },
+    { returnDocument: "after" },
+  );
+  if (!acceptedOffer) {
+    res.status(409).json({ error: "No se puede aceptar: la oferta ya no está PENDING" });
+    return;
+  }
+
+  // Escritura 2: el anuncio pasa a RESERVED.
+  // Si el servidor se apagara justo entre la 1 y la 2, quedaría la oferta aceptada
+  // y el anuncio AVAILABLE. Para evitarlo de verdad haría falta una transacción.
+  await listingsCollection().updateOne({ _id: offer.listing.id }, { $set: { status: "RESERVED" } });
+
+  res.json(acceptedOffer);
+});
+
 export default router;

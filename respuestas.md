@@ -36,3 +36,11 @@ Porque la petición está bien hecha: los ids tienen buen formato, existen y la 
 ## Pregunta 6
 
 MongoDB comprueba lo que le pedimos con **índices**, por ejemplo el índice único de `users.email` (no deja dos usuarios con el mismo email) y que cada `_id` sea único. Todo lo demás lo comprueba la API en el código: que una referencia existe (que el `sellerId` o el `listingId` estén de verdad en su colección), que `price`/`amount` sean números (y no el texto `"75"`), que los campos obligatorios lleguen o que el anuncio esté `AVAILABLE` antes de aceptar una oferta.
+
+---
+
+# Retos opcionales
+
+## Reto 1: aceptar una oferta
+
+**¿Qué pasa si el servidor se apaga entre una escritura y otra?** Los datos quedan incoherentes: la oferta queda `ACCEPTED` pero el anuncio sigue `AVAILABLE`, y otros compradores podrían seguir ofertando por algo que ya está reservado. MongoDB solo garantiza que cada escritura sobre **un** documento es atómica; para que las dos se hagan juntas o ninguna haría falta una **transacción** (que necesita MongoDB en modo replica set).
