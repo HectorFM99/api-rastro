@@ -75,6 +75,19 @@ router.get("/:id", async (req, res) => {
   res.json(listing);
 });
 
+// ---------- GET /api/listings/stats (estadísticas por categoría) ----------
+router.get("/stats", async (_req, res) => {
+  const stats = await listingsCollection()
+    .aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 }, averagePrice: { $avg: "$price" } } },
+      { $project: { _id: 0, category: "$_id", count: 1, averagePrice: { $round: ["$averagePrice", 2] } } },
+      { $sort: { category: 1 } },
+    ])
+    .toArray();
+
+  res.json(stats);
+});
+
 // ---------- GET /api/listings/:id/offers (ofertas de un anuncio) ----------
 router.get("/:id/offers", async (req, res) => {
   const { id } = req.params;
