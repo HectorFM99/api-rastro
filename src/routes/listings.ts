@@ -45,6 +45,9 @@ router.get("/", async (req, res) => {
   res.json(listings);
 });
 
+/**
+ * Obtiene estadísticas de anuncios agrupadas por categoría.
+ */
 router.get("/stats", async (_req, res) => {
   const stats = await listingsCollection()
     .aggregate([
