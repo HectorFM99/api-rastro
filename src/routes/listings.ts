@@ -20,6 +20,7 @@ const LIST_FIELDS = { title: 1, price: 1, category: 1, city: 1, status: 1 };
  * Obtiene el listado de anuncios con filtros opcionales.
  */
 router.get("/", async (req, res) => {
+  // Construcción de filtros de búsqueda (categoría, ciudad, precio máximo)
   const filter: Filter<Listing> = {};
 
   if (typeof req.query.category === "string") {
