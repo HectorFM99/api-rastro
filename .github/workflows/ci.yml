@@ -38,5 +38,6 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+      # Verificación de tipos con TypeScript
       - name: Comprobar los tipos
         run: npm run typecheck
