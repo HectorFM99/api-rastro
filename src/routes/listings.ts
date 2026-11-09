@@ -16,6 +16,9 @@ function isValidPrice(value: unknown): value is number {
 
 const LIST_FIELDS = { title: 1, price: 1, category: 1, city: 1, status: 1 };
 
+/**
+ * Obtiene el listado de anuncios con filtros opcionales.
+ */
 router.get("/", async (req, res) => {
   const filter: Filter<Listing> = {};
 
