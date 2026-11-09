@@ -59,6 +59,9 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newOffer });
 });
 
+/**
+ * Acepta una oferta pendiente y reserva el anuncio.
+ */
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
 
