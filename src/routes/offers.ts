@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
     return;
   }
 
+  // Validación: el comprador no puede ser el vendedor del anuncio
   if (listing.seller.id.equals(buyer._id)) {
     res.status(400).json({ error: "No puedes ofertar por tu propio anuncio" });
     return;
