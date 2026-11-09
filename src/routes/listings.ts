@@ -103,6 +103,9 @@ router.get("/:id/offers", async (req, res) => {
   res.json(offers);
 });
 
+/**
+ * Publica un nuevo anuncio validando los datos obligatorios.
+ */
 router.post("/", async (req, res) => {
   const body = req.body ?? {};
 
