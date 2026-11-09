@@ -5,6 +5,9 @@ import type { Offer } from "../types";
 
 const router = Router();
 
+/**
+ * Crea una nueva oferta para un anuncio.
+ */
 router.post("/", async (req, res) => {
   const { listingId, buyerId, amount } = req.body ?? {};
 
