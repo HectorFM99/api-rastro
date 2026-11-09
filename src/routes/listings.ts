@@ -159,6 +159,9 @@ router.post("/", async (req, res) => {
   res.status(201).json({ _id: result.insertedId, ...newListing });
 });
 
+/**
+ * Actualiza el precio de un anuncio existente.
+ */
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
 
