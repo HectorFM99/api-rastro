@@ -19,6 +19,7 @@ function isValidPrice(value: unknown): value is number {
 const LIST_FIELDS = { title: 1, price: 1, category: 1, city: 1, status: 1 };
 
 router.get("/", async (req, res) => {
+  // Construcción de filtros de búsqueda (categoría, ciudad, precio máximo)
   const filter: Filter<Listing> = {};
 
   if (typeof req.query.category === "string") {
