@@ -10,6 +10,9 @@ const client = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
 
 let db: Db;
 
+/**
+ * Conecta a la base de datos MongoDB y asigna la instancia de Db.
+ */
 export async function connectDb() {
   await client.connect();
   db = client.db(process.env.DB_NAME ?? "rastro");
